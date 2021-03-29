@@ -74,6 +74,19 @@
                     <label class="form-check-label" for="media2">Digital </label>
                 </div>
 
+                <div class="form-check">
+                    <!-- v-model completed -->
+                    <input id="checkbox" class="form-check-input" type="checkbox" value="Completed" v-model="checked">
+                    <label class="form-check-label" for="checkbox">Completed </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="notes">Notes:</label>
+                    <!--  v-model notes -->
+                    <input id="notes" class="form-control" type="text" maxlength="40" v-model="notes">       
+                    
+                </div>
+
                 <div>
                     <!-- v-on:click -->
                     <button class="btn btn-primary mt-2" type="button" v-on:click="submit">Add record</button>
@@ -98,6 +111,8 @@
                             <th>How many hours?</th>
                             <th>Type</th>
                             <th>Media</th>
+                            <th>Completed</th>
+                            <th>Notes</th>
                         </tr>
                         <!--  use v-for to create one table row for each activity record -->
                         <tr v-for="record in activityRecords">
@@ -105,6 +120,8 @@
                             <td>{{ record.hours}}</td>
                             <td>{{ record.type }}</td>
                             <td>{{ record.medium }}</td>
+                            <td>{{ record.checked }}</td>
+                            <td>{{ record.notes }}</td>
                         </tr>
                     </table>
                 </div>
@@ -117,7 +134,7 @@
 
             <div class="card-body">
 
-                <!-- TODO add computed property to calculate the total hours -->
+                <!-- computed property to calculate the total hours -->
                 <p>You have practiced a total of {{ totalHours }} hours</p>
 
                 <!-- Challenge question! Display a list of the total hours for each type.  -->
@@ -129,7 +146,7 @@
 
     <script>
 
-    //   TODO create new Vue app here
+    //   create new Vue app here
     let app = Vue.createApp({
         data() {
             return {
@@ -147,9 +164,11 @@
                 hours: 1,
                 type: 'Sketching',
                 medium: 'Traditional',
+                checked: false,
+                notes: '',
 
             // used with the select-option in the form for the user to select the type    
-                types: ['Sketching', 'Drawing', 'Painting'],
+                types: ['Sketching', 'Drawing', 'Painting', 'Water-colors'],
 
                 errors: []
             }
@@ -177,12 +196,16 @@
                     this.errors.push('Select a medium')
                 }
 
+                
                 if (this.errors.length === 0) {
                     let record = {
                         date: date,
                         hours: this.hours,
                         type: this.type,
-                        medium: this.medium
+                        medium: this.medium,
+                        notes: this.notes,
+                        checked: this.checked
+
                     }
                     this.activityRecords.push(record)
                     console.log(this.activityRecords)
