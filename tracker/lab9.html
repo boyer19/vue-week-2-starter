@@ -83,7 +83,7 @@
                 <div class="form-group">
                     <label class="form-label" for="notes">Notes:</label>
                     <!--  v-model notes -->
-                    <input id="notes" class="form-control" type="text" maxlength="40" v-model="notes">       
+                    <input id="notes" class="form-control" type="text" v-model="notes">       
                     
                 </div>
 
@@ -168,7 +168,7 @@
                 notes: '',
 
             // used with the select-option in the form for the user to select the type    
-                types: ['Sketching', 'Drawing', 'Painting', 'Water-colors'],
+                types: ['Sketching', 'Drawing', 'Painting', 'Water-colors', 'Pottery'],
 
                 errors: []
             }
@@ -219,6 +219,12 @@
             },
             shortDate(date) {
                 return new Intl.DateTimeFormat('en-US', {timeZone: 'UTC'}).format(date)
+            },
+            limitedNotes(notes) {                                                                // Not calling on method? Works in dev tools but not displaying 
+                let notes = notes.length
+                if (notes >40) {
+                   notes = notes.substr(0,40)
+                }
             }
         },
         computed: {
@@ -240,15 +246,16 @@
             //         return this.activityRecords.length + ' records'
             //     }
              },
-             totalHours() {
+            totalHours() {
                  let total = 0
                  this.activityRecords.forEach(function(record) {
                      total = total + record.hours
                  })
                  return total
-             }
-
+            }
+            
         }
+
     })
     app.mount('#app')
 
