@@ -2,3 +2,23 @@
     max-height: 250px;
     overflow: scroll;
 }
+
+.sketching {
+    background-color: aquamarine;
+}
+
+.drawing {
+    background-color: lightblue;
+}
+
+.painting {
+    background-color: chartreuse;
+}
+
+.Watercolors {
+    background-color: cornflowerblue;
+}
+
+.pottery {
+    background-color: cyan;
+}

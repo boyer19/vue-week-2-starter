@@ -54,7 +54,7 @@
 
                     <!-- Use v-for to create option elements, one for each type -->
                     <select class="form-control" v-model="type">
-                        <option v-for="activityType in types">{{ activityType }}</option>
+                        <option v-for="activityType in types" >{{ activityType }} </option>
                     </select>
                 </div>
 
@@ -115,13 +115,13 @@
                             <th>Notes</th>
                         </tr>
                         <!--  use v-for to create one table row for each activity record -->
-                        <tr v-for="record in activityRecords">
+                        <tr v-for="record in activityRecords" :class='{sketching: record.type == types[0], drawing: record.type == types[1], painting: record.type == types[2], Watercolors: record.type == types[3], pottery: record.type == types[4]}'>
                             <td>{{ shortDate(record.date) }}</td>
                             <td>{{ record.hours}}</td>
                             <td>{{ record.type }}</td>
                             <td>{{ record.medium }}</td>
                             <td>{{ record.checked }}</td>
-                            <td>{{ record.notes }}</td>
+                            <td>{{ limitedNotes(record.notes) }}</td>
                         </tr>
                     </table>
                 </div>
@@ -136,8 +136,14 @@
 
                 <!-- computed property to calculate the total hours -->
                 <p>You have practiced a total of {{ totalHours }} hours</p>
+                
 
                 <!-- Challenge question! Display a list of the total hours for each type.  -->
+                <p>You have practiced in Drawing a total of {{ sketchingTotal }} hours</p>
+                <p>You have practiced in Drawing a total of {{ drawingTotal }} hours</p>
+                <p>You have practiced in Drawing a total of {{ paintingTotal }} hours</p>
+                <p>You have practiced in Drawing a total of {{ watercolorsTotal }} hours</p>
+                <p>You have practiced in Drawing a total of {{ potteryTotal }} hours</p>
           
             </div>
         </div>
@@ -168,7 +174,7 @@
                 notes: '',
 
             // used with the select-option in the form for the user to select the type    
-                types: ['Sketching', 'Drawing', 'Painting', 'Water-colors', 'Pottery'],
+                types: ['Sketching', 'Drawing', 'Painting', 'Watercolors', 'Pottery'],    
 
                 errors: []
             }
@@ -220,16 +226,17 @@
             shortDate(date) {
                 return new Intl.DateTimeFormat('en-US', {timeZone: 'UTC'}).format(date)
             },
-            limitedNotes(notes) {                                                                // Not calling on method? Works in dev tools but not displaying 
-                let notes = notes.length
-                if (notes >40) {
-                   notes = notes.substr(0,40)
+            limitedNotes(notes) {                                                                
+                let note = notes.length
+                if (note >40) {
+                   note = notes.substr(0,40) + "..."
                 }
+                return note
             }
         },
         computed: {
             
-            totalRecordsMessage()  {                                                         // Neater?
+            totalRecordsMessage()  {                                                         // Neater way of doing?
                 
                 let numberOfRecords = this.activityRecords.length
 
@@ -250,12 +257,57 @@
                  let total = 0
                  this.activityRecords.forEach(function(record) {
                      total = total + record.hours
-                 })
-                 return total
-            }
-            
-        }
 
+                 })
+                 
+                 return total
+            },
+            drawingTotal() {
+                let drawingTotal = 0
+                    this.activityRecords.forEach(function(record) {
+                        if (record.type == "Drawing") {
+                            drawingTotal = drawingTotal + record.hours
+                        }
+                    })
+                return drawingTotal           
+            },
+            sketchingTotal() {
+                let sketchingTotal = 0
+                    this.activityRecords.forEach(function(record) {
+                        if (record.type == "Sketching") {
+                            sketchingTotal = sketchingTotal + record.hours
+                        }
+                    })
+                return sketchingTotal           
+            },  
+            paintingTotal() {
+                let paintingTotal = 0
+                    this.activityRecords.forEach(function(record) {
+                        if (record.type == "Painting") {
+                            paintingTotal = paintingTotal + record.hours
+                        }
+                    })
+                return paintingTotal           
+            }, 
+            watercolorsTotal() {
+                let watercolorsTotal = 0
+                    this.activityRecords.forEach(function(record) {
+                        if (record.type == "Watercolors") {
+                            watercolorsTotal = watercolorsTotal + record.hours
+                        }
+                    })
+                return watercolorsTotal          
+            }, 
+            potteryTotal() {
+                let potteryTotal = 0
+                    this.activityRecords.forEach(function(record) {
+                        if (record.type == "Pottery") {
+                            potteryTotal = potteryTotal + record.hours
+                        }
+                    })
+                return potteryTotal           
+            },     
+        }
     })
     app.mount('#app')
 
